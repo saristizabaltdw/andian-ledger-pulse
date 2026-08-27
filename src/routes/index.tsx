@@ -8,12 +8,11 @@ import {
   LineChart,
   Pie,
   PieChart,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useRef, useState } from "react";
 import { branchSales, money, paymentMix, salesTrend } from "@/lib/andian-data";
 
 export const Route = createFileRoute("/")({
@@ -56,14 +55,25 @@ const tooltipStyle = {
 } as const;
 
 function ChartFrame({ height, children }: { height: number; children: React.ReactElement }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <div style={{ height }} />;
-  return (
-    <ResponsiveContainer width="100%" height={height}>
-      {children}
-    </ResponsiveContainer>
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} style={{ height }}>
+      {width > 0
+        ? cloneElement(children, { width, height } as Record<string, unknown>)
+        : null}
+    </div>
   );
 }
 
