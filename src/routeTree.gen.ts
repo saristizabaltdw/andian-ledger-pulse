@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReporteDiarioRouteImport } from './routes/reporte-diario'
+import { Route as ReporteMensualRouteImport } from './routes/reporte-mensual'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const ReporteDiarioRoute = ReporteDiarioRouteImport.update({
   path: '/reporte-diario',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReporteMensualRoute = ReporteMensualRouteImport.update({
+  id: '/reporte-mensual',
+  path: '/reporte-mensual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/reporte-diario'
+  fullPaths: '/' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/reporte-diario'
-  id: '__root__' | '/' | '/reporte-diario'
+  to: '/' | '/reporte-diario' | '/reporte-mensual'
+  id: '__root__' | '/' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ReporteDiarioRoute: typeof ReporteDiarioRoute
+  ReporteMensualRoute: typeof ReporteMensualRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReporteDiarioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reporte-mensual': {
+      id: '/reporte-mensual'
+      path: '/reporte-mensual'
+      fullPath: '/reporte-mensual'
+      preLoaderRoute: typeof ReporteMensualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ReporteDiarioRoute: ReporteDiarioRoute,
+  ReporteMensualRoute: ReporteMensualRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
