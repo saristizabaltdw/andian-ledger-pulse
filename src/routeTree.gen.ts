@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConciliacionRouteImport } from './routes/conciliacion'
 import { Route as ReporteDiarioRouteImport } from './routes/reporte-diario'
 import { Route as ReporteMensualRouteImport } from './routes/reporte-mensual'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConciliacionRoute = ConciliacionRouteImport.update({
+  id: '/conciliacion',
+  path: '/conciliacion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReporteDiarioRoute = ReporteDiarioRouteImport.update({
@@ -31,30 +37,35 @@ const ReporteMensualRoute = ReporteMensualRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
   '/reporte-diario': typeof ReporteDiarioRoute
   '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
   '/reporte-diario': typeof ReporteDiarioRoute
   '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
   '/reporte-diario': typeof ReporteDiarioRoute
   '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/reporte-diario' | '/reporte-mensual'
+  fullPaths: '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/reporte-diario' | '/reporte-mensual'
-  id: '__root__' | '/' | '/reporte-diario' | '/reporte-mensual'
+  to: '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
+  id:
+    '__root__' | '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConciliacionRoute: typeof ConciliacionRoute
   ReporteDiarioRoute: typeof ReporteDiarioRoute
   ReporteMensualRoute: typeof ReporteMensualRoute
 }
@@ -66,6 +77,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conciliacion': {
+      id: '/conciliacion'
+      path: '/conciliacion'
+      fullPath: '/conciliacion'
+      preLoaderRoute: typeof ConciliacionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reporte-diario': {
@@ -87,6 +105,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConciliacionRoute: ConciliacionRoute,
   ReporteDiarioRoute: ReporteDiarioRoute,
   ReporteMensualRoute: ReporteMensualRoute,
 }
