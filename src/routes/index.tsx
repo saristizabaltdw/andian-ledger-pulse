@@ -13,6 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useEffect, useState } from "react";
 import { branchSales, money, paymentMix, salesTrend } from "@/lib/andian-data";
 
 export const Route = createFileRoute("/")({
@@ -54,6 +55,17 @@ const tooltipStyle = {
   },
 } as const;
 
+function ChartFrame({ height, children }: { height: number; children: React.ReactElement }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div style={{ height }} />;
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      {children}
+    </ChartFrame>
+  );
+}
+
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="panel p-5">
@@ -79,7 +91,7 @@ function Dashboard() {
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Panel title="Tendencia de ventas — julio">
-            <ResponsiveContainer width="100%" height={260}>
+            <ChartFrame height={260}>
               <LineChart data={salesTrend} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                 <CartesianGrid stroke="var(--color-border)" vertical={false} />
                 <XAxis
@@ -103,12 +115,12 @@ function Dashboard() {
                   dot={{ r: 3, fill: "var(--color-chart-1)" }}
                 />
               </LineChart>
-            </ResponsiveContainer>
+            </ChartFrame>
           </Panel>
         </div>
 
         <Panel title="Medios de pago — hoy">
-          <ResponsiveContainer width="100%" height={200}>
+          <ChartFrame height={200}>
             <PieChart>
               <Pie isAnimationActive={false}
                 data={paymentMix}
@@ -125,7 +137,7 @@ function Dashboard() {
               </Pie>
               <Tooltip {...tooltipStyle} formatter={(v: number) => money(v)} />
             </PieChart>
-          </ResponsiveContainer>
+          </ChartFrame>
           <ul className="mt-3 space-y-2">
             {paymentMix.map((p, i) => (
               <li key={p.name} className="flex items-center justify-between text-sm">
@@ -144,7 +156,7 @@ function Dashboard() {
       </div>
 
       <Panel title="Ventas por sucursal — hoy">
-        <ResponsiveContainer width="100%" height={280}>
+        <ChartFrame height={280}>
           <BarChart data={branchSales} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
             <CartesianGrid stroke="var(--color-border)" vertical={false} />
             <XAxis
@@ -161,7 +173,7 @@ function Dashboard() {
             <Tooltip {...tooltipStyle} cursor={{ fill: "var(--color-muted)" }} formatter={(v: number) => money(v)} />
             <Bar isAnimationActive={false} dataKey="total" fill="var(--color-chart-1)" barSize={38} />
           </BarChart>
-        </ResponsiveContainer>
+        </ChartFrame>
       </Panel>
     </div>
   );
