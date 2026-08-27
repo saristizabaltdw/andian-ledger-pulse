@@ -10,33 +10,64 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConciliacionRouteImport } from './routes/conciliacion'
+import { Route as ReporteDiarioRouteImport } from './routes/reporte-diario'
+import { Route as ReporteMensualRouteImport } from './routes/reporte-mensual'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConciliacionRoute = ConciliacionRouteImport.update({
+  id: '/conciliacion',
+  path: '/conciliacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReporteDiarioRoute = ReporteDiarioRouteImport.update({
+  id: '/reporte-diario',
+  path: '/reporte-diario',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReporteMensualRoute = ReporteMensualRouteImport.update({
+  id: '/reporte-mensual',
+  path: '/reporte-mensual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
+  '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
+  '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/conciliacion': typeof ConciliacionRoute
+  '/reporte-diario': typeof ReporteDiarioRoute
+  '/reporte-mensual': typeof ReporteMensualRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
+  id:
+    '__root__' | '/' | '/conciliacion' | '/reporte-diario' | '/reporte-mensual'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConciliacionRoute: typeof ConciliacionRoute
+  ReporteDiarioRoute: typeof ReporteDiarioRoute
+  ReporteMensualRoute: typeof ReporteMensualRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +79,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/conciliacion': {
+      id: '/conciliacion'
+      path: '/conciliacion'
+      fullPath: '/conciliacion'
+      preLoaderRoute: typeof ConciliacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reporte-diario': {
+      id: '/reporte-diario'
+      path: '/reporte-diario'
+      fullPath: '/reporte-diario'
+      preLoaderRoute: typeof ReporteDiarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reporte-mensual': {
+      id: '/reporte-mensual'
+      path: '/reporte-mensual'
+      fullPath: '/reporte-mensual'
+      preLoaderRoute: typeof ReporteMensualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConciliacionRoute: ConciliacionRoute,
+  ReporteDiarioRoute: ReporteDiarioRoute,
+  ReporteMensualRoute: ReporteMensualRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
