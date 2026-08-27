@@ -62,7 +62,8 @@ function ChartFrame({ height, children }: { height: number; children: React.Reac
   return (
     <ResponsiveContainer width="100%" height={height}>
       {children}
-    </ChartFrame>
+    </ResponsiveContainer>
+
   );
 }
 
