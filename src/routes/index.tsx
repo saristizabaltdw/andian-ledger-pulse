@@ -95,7 +95,7 @@ function Dashboard() {
                   axisLine={false}
                 />
                 <Tooltip {...tooltipStyle} formatter={(v: number) => money(v)} />
-                <Line
+                <Line isAnimationActive={false}
                   type="monotone"
                   dataKey="total"
                   stroke="var(--color-chart-1)"
@@ -110,7 +110,7 @@ function Dashboard() {
         <Panel title="Medios de pago — hoy">
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
-              <Pie
+              <Pie isAnimationActive={false}
                 data={paymentMix}
                 dataKey="value"
                 nameKey="name"
@@ -159,7 +159,7 @@ function Dashboard() {
               axisLine={false}
             />
             <Tooltip {...tooltipStyle} cursor={{ fill: "var(--color-muted)" }} formatter={(v: number) => money(v)} />
-            <Bar dataKey="total" fill="var(--color-chart-1)" barSize={38} />
+            <Bar isAnimationActive={false} dataKey="total" fill="var(--color-chart-1)" barSize={38} />
           </BarChart>
         </ResponsiveContainer>
       </Panel>
